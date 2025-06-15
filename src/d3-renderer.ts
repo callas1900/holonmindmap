@@ -13,6 +13,7 @@ export class MindMapRenderer {
   private selectedNode: any = null;
   private inputHandler: InputHandler;
   private config: MindMapRendererConfig;
+  private hideTimeout: any = null;
 
   constructor(config: MindMapRendererConfig) {
     this.config = config;
@@ -117,19 +118,31 @@ export class MindMapRenderer {
 
     deleteGroup.append("circle")
       .attr("class", "delete-button")
-      .attr("cx", d => d.r * 0.7)
-      .attr("cy", d => -d.r * 0.7)
+      .attr("cx", d => d.r * 0.6)
+      .attr("cy", d => -d.r * 0.6)
       .attr("r", 12)
       .on("click", (event, d) => {
         event.stopPropagation();
         this.deleteNode(d);
+      })
+      .on("mouseenter", (event, d) => {
+        this.showDeleteButton(d);
+      })
+      .on("mouseleave", (event, d) => {
+        this.hideDeleteButton(d);
       });
 
     deleteGroup.append("text")
       .attr("class", "delete-text")
-      .attr("x", d => d.r * 0.7)
-      .attr("y", d => -d.r * 0.7)
-      .text("×");
+      .attr("x", d => d.r * 0.6)
+      .attr("y", d => -d.r * 0.6)
+      .text("×")
+      .on("mouseenter", (event, d) => {
+        this.showDeleteButton(d);
+      })
+      .on("mouseleave", (event, d) => {
+        this.hideDeleteButton(d);
+      });
   }
 
   private truncateText(text: string, radius: number): string {
@@ -144,6 +157,12 @@ export class MindMapRenderer {
   }
 
   public showDeleteButton(d: d3.HierarchyCircularNode<MindMapNodeData>): void {
+    // Clear any existing timeout
+    if (this.hideTimeout) {
+      clearTimeout(this.hideTimeout);
+      this.hideTimeout = null;
+    }
+    
     this.g.select(`.delete-group[data-node-id="${d.data.id}"]`)
       .transition()
       .duration(200)
@@ -151,10 +170,14 @@ export class MindMapRenderer {
   }
 
   public hideDeleteButton(d: d3.HierarchyCircularNode<MindMapNodeData>): void {
-    this.g.select(`.delete-group[data-node-id="${d.data.id}"]`)
-      .transition()
-      .duration(200)
-      .style("opacity", 0);
+    // Use timeout to delay hiding
+    this.hideTimeout = setTimeout(() => {
+      this.g.select(`.delete-group[data-node-id="${d.data.id}"]`)
+        .transition()
+        .duration(200)
+        .style("opacity", 0);
+      this.hideTimeout = null;
+    }, 800);
   }
 
   public deleteNode(d: d3.HierarchyCircularNode<MindMapNodeData>): void {
