@@ -10,7 +10,8 @@ export class MindMap {
     this.renderer = new MindMapRenderer({ 
       containerId,
       onDeleteNode: (nodeId: string) => this.removeNode(nodeId),
-      onUpdateNode: (nodeId: string, newTitle: string) => this.updateNode(nodeId, newTitle)
+      onUpdateNode: (nodeId: string, newTitle: string) => this.updateNode(nodeId, newTitle),
+      onAddNode: (parentId?: string) => this.addNode("New Node", parentId)
     });
     this.render();
   }

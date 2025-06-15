@@ -1,5 +1,5 @@
 module.exports = {
-  testDir: './',
+  testDir: './tests/e2e',
   testMatch: '**/*test*.js',
   use: {
     headless: true,

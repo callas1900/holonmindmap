@@ -201,13 +201,19 @@ export class MindMapRenderer {
     if (!this.data) return;
     
     const [x, y] = d3.pointer(event);
-    // For simplicity, add to root's children
-    this.data.children.push({
-      id: Math.random().toString(36).substr(2, 9),
-      title: "New Node",
-      children: []
-    });
-    this.render(this.data);
+    
+    if (this.config.onAddNode) {
+      // Use the callback to add the node
+      this.config.onAddNode();
+    } else {
+      // Fallback to direct manipulation (legacy behavior)
+      this.data.children.push({
+        id: Math.random().toString(36).substr(2, 9),
+        title: "New Node",
+        children: []
+      });
+      this.render(this.data);
+    }
   }
 
   public getData(): MindMapNodeData | null {

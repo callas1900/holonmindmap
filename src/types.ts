@@ -22,6 +22,7 @@ export interface MindMapRendererConfig {
   height?: number;
   onDeleteNode?: (nodeId: string) => boolean;
   onUpdateNode?: (nodeId: string, newTitle: string) => boolean;
+  onAddNode?: (parentId?: string) => MindMapNodeData;
 }
 
 export interface NodePosition {
