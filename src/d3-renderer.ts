@@ -12,8 +12,10 @@ export class MindMapRenderer {
   private data: MindMapNodeData | null = null;
   private selectedNode: any = null;
   private inputHandler: InputHandler;
+  private config: MindMapRendererConfig;
 
   constructor(config: MindMapRendererConfig) {
+    this.config = config;
     this.container = d3.select(config.containerId);
     this.width = config.width || window.innerWidth;
     this.height = config.height || window.innerHeight;
@@ -156,12 +158,18 @@ export class MindMapRenderer {
   }
 
   public deleteNode(d: d3.HierarchyCircularNode<MindMapNodeData>): void {
-    if (d.parent && this.data) {
-      const siblings = d.parent.data.children;
-      const index = siblings.indexOf(d.data);
-      if (index > -1) {
-        siblings.splice(index, 1);
-        this.render(this.data);
+    if (this.config.onDeleteNode) {
+      // Use the callback to delete the node
+      this.config.onDeleteNode(d.data.id);
+    } else {
+      // Fallback to direct manipulation (legacy behavior)
+      if (d.parent && this.data) {
+        const siblings = d.parent.data.children;
+        const index = siblings.indexOf(d.data);
+        if (index > -1) {
+          siblings.splice(index, 1);
+          this.render(this.data);
+        }
       }
     }
   }

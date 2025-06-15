@@ -7,7 +7,11 @@ export class MindMap {
 
   constructor(containerId: string, initialData?: MindMapNodeData) {
     this.data = initialData || this.createSampleData();
-    this.renderer = new MindMapRenderer({ containerId });
+    this.renderer = new MindMapRenderer({ 
+      containerId,
+      onDeleteNode: (nodeId: string) => this.removeNode(nodeId),
+      onUpdateNode: (nodeId: string, newTitle: string) => this.updateNode(nodeId, newTitle)
+    });
     this.render();
   }
 

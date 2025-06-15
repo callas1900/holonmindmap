@@ -20,6 +20,8 @@ export interface MindMapRendererConfig {
   containerId: string;
   width?: number;
   height?: number;
+  onDeleteNode?: (nodeId: string) => boolean;
+  onUpdateNode?: (nodeId: string, newTitle: string) => boolean;
 }
 
 export interface NodePosition {
