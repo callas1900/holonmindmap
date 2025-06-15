@@ -1,0 +1,30 @@
+{
+  "name": "mindmap-tool",
+  "version": "1.0.0",
+  "description": "Interactive mind map tool using D3.js circle packing",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "dev": "tsc --watch",
+    "serve": "python3 -m http.server 8000",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "mindmap",
+    "d3",
+    "typescript",
+    "visualization"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "d3": "^7.8.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.53.0",
+    "@types/d3": "^7.4.0",
+    "playwright": "^1.53.0",
+    "typescript": "^5.0.0"
+  }
+}
